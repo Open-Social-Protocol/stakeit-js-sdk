@@ -1,0 +1,14 @@
+diff --git a/node_modules/@json-rpc-tools/provider/dist/cjs/ws.js b/node_modules/@json-rpc-tools/provider/dist/cjs/ws.js
+index 4c9a11f..9cf1c52 100644
+--- a/node_modules/@json-rpc-tools/provider/dist/cjs/ws.js
++++ b/node_modules/@json-rpc-tools/provider/dist/cjs/ws.js
+@@ -6,7 +6,8 @@ const events_1 = require("events");
+ const safe_json_utils_1 = require("safe-json-utils");
+ const utils_1 = require("@json-rpc-tools/utils");
+ const url_1 = require("./url");
+-const WS = typeof global.WebSocket !== "undefined" ? global.WebSocket : require("ws");
++var globalThis = require('globalthis')(); 
++const WS = typeof globalThis?.WebSocket !== "undefined" ? globalThis?.WebSocket : require("ws");
+ class WsConnection {
+     constructor(url) {
+         this.url = url;

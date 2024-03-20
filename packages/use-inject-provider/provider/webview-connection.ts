@@ -101,7 +101,11 @@ export class WebViewConnection implements IJsonRpcConnection {
     this.events.emit("payload", payload);
   }
 }
-
+declare global {
+  interface Document {
+    addEventListener(type: "message", listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+  }
+}
 class WebViewApi {
   events = new EventEmitter();
 
@@ -110,7 +114,7 @@ class WebViewApi {
   constructor(args: { timeoutMs?: number } = {}) {
     this.timeoutMs = args.timeoutMs ?? 1000 * 60 * 5;
 
-    window.addEventListener("message", this.messageSubscription);
+    document.addEventListener("message", this.messageSubscription);
   }
 
   private constructEventName = (id: number) => `webViewMessage:${id}`;

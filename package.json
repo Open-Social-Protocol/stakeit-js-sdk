@@ -15,7 +15,7 @@
     "coverage:ci": "turbo run --concurrency=2 coverage -- --maxWorkers=2 --forceExit",
     "format": "turbo run --concurrency=4 format",
     "lint": "turbo run --concurrency=4 lint",
-    "postinstall": "husky install",
+    "postinstall": "patch-package && husky install",
     "test": "turbo run --concurrency=4 test",
     "test:ci": "turbo run --concurrency=2 test",
     "regen:api-hooks": "yarn workspace @stakekit/api-hooks build && yarn workspace @stakekit/api-hooks orval"
@@ -33,6 +33,7 @@
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-prettier": "^4.2.1",
     "husky": "^8.0.0",
+    "patch-package": "^8.0.0",
     "prettier": "^2.8.7",
     "turbo": "^1.8.3"
   },
