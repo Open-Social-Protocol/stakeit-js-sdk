@@ -6,7 +6,17 @@ import {
   JsonRpcResponse,
 } from "@json-rpc-tools/utils";
 import { safeJsonParse } from "safe-json-utils";
-
+import { EIP1193Provider } from "eip1193-provider";
+import { isInIframe } from "./utils";
+declare global {
+  interface Window {
+    ReactNativeWebView?: { postMessage: (message: string) => void };
+    ethereum?: EIP1193Provider;
+  }
+  interface Document {
+    addEventListener(type: "message", listener: (e: MessageEvent) => void, options?: boolean | AddEventListenerOptions): void;
+  }
+}
 export class WebViewConnection implements IJsonRpcConnection {
   public events = new EventEmitter();
 
@@ -147,8 +157,11 @@ class WebViewApi {
       );
     });
 
-    window.ReactNativeWebView?.postMessage(JSON.stringify(payload));
-
+    if(window.ReactNativeWebView) {
+      window.ReactNativeWebView?.postMessage(JSON.stringify(payload));
+    }else if (isInIframe()){
+      window.parent.postMessage(JSON.stringify(payload), "*");
+    }
     return promise;
   }
 }
