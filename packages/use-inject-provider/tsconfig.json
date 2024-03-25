@@ -3,7 +3,10 @@
     "noEmit": true,
     "target": "ES2022",
     "useDefineForClassFields": true,
-    "lib": ["ES2022"],
+    "lib": [
+      "ES2022",
+      "dom"
+    ],
     "allowJs": false,
     "skipLibCheck": true,
     "esModuleInterop": false,

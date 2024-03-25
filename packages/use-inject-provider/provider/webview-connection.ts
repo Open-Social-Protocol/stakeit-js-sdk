@@ -3,20 +3,23 @@ import {
   formatJsonRpcError,
   IJsonRpcConnection,
   JsonRpcPayload,
-  JsonRpcResponse,
+  JsonRpcResponse
 } from "@json-rpc-tools/utils";
 import { safeJsonParse } from "safe-json-utils";
 import { EIP1193Provider } from "eip1193-provider";
 import { isInIframe } from "./utils";
+
 declare global {
   interface Window {
     ReactNativeWebView?: { postMessage: (message: string) => void };
     ethereum?: EIP1193Provider;
   }
+
   interface Document {
     addEventListener(type: "message", listener: (e: MessageEvent) => void, options?: boolean | AddEventListenerOptions): void;
   }
 }
+
 export class WebViewConnection implements IJsonRpcConnection {
   public events = new EventEmitter();
 
@@ -111,11 +114,13 @@ export class WebViewConnection implements IJsonRpcConnection {
     this.events.emit("payload", payload);
   }
 }
+
 declare global {
   interface Document {
     addEventListener(type: "message", listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
   }
 }
+
 class WebViewApi {
   events = new EventEmitter();
 
@@ -125,6 +130,9 @@ class WebViewApi {
     this.timeoutMs = args.timeoutMs ?? 1000 * 60 * 5;
 
     document.addEventListener("message", this.messageSubscription);
+    if (isInIframe()) {
+      window.addEventListener("message", this.messageSubscription);
+    }
   }
 
   private constructEventName = (id: number) => `webViewMessage:${id}`;
@@ -157,9 +165,9 @@ class WebViewApi {
       );
     });
 
-    if(window.ReactNativeWebView) {
+    if (window.ReactNativeWebView) {
       window.ReactNativeWebView?.postMessage(JSON.stringify(payload));
-    }else if (isInIframe()){
+    } else if (isInIframe()) {
       window.parent.postMessage(JSON.stringify(payload), "*");
     }
     return promise;
