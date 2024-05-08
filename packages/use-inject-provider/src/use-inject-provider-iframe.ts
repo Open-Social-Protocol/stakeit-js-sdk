@@ -39,7 +39,7 @@ export const useIframeInjectProvider = (args: {
           .then((result) => formatJsonRpcResult(parsedData.id, result))
           .catch((e) => formatJsonRpcError(e));
 
-        return iframe.current?.contentWindow?.postMessage(JSON.stringify(result));
+        return iframe.current?.contentWindow?.postMessage(JSON.stringify(result), "*");
       } catch (error) {
         console.log(error);
       }
