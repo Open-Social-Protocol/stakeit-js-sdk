@@ -1,6 +1,6 @@
 {
   "name": "@open_social_protocol/stakekit-use-inject-provider",
-  "version": "0.0.7",
+  "version": "0.0.9",
   "description": "React hook for injecting a provider into a react-native-webview",
   "main": "./dist/esm/index.js",
   "types": "./dist/index.d.ts",
