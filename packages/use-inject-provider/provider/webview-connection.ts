@@ -7,7 +7,7 @@ import {
 } from "@json-rpc-tools/utils";
 import { safeJsonParse } from "safe-json-utils";
 import { EIP1193Provider } from "eip1193-provider";
-import { isInIframe } from "./utils";
+import { isInIframe, isIOS } from "./utils";
 
 declare global {
   interface Window {
@@ -130,7 +130,7 @@ class WebViewApi {
     this.timeoutMs = args.timeoutMs ?? 1000 * 60 * 5;
 
     document.addEventListener("message", this.messageSubscription);
-    if (isInIframe()) {
+    if (isInIframe() || isIOS()) {
       window.addEventListener("message", this.messageSubscription);
     }
   }
